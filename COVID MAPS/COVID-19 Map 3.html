@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>COVID-19 Postive Cases in Philadelphia</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  
+    <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.15/"></script>
+  
+  <script>  
+    require([
+      "esri/WebMap",
+      "esri/views/MapView",    
+      "esri/widgets/Legend",
+      "esri/widgets/ScaleBar"
+    ], function(WebMap, MapView, Legend, ScaleBar) {
+
+      var webmap = new WebMap({
+       portalItem: {
+          id: "9ec1ddf67a354b05b69bbf9594f98049"
+        }
+      });
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: webmap,
+        center: [-75.1652, 39.9526],
+        zoom: 12
+      });
+
+        var legend = new Legend({
+        view: view
+      });
+      view.ui.add(legend, "bottom-right");
+
+      var scalebar = new ScaleBar({
+        view: view
+      });
+      view.ui.add(scalebar, "bottom-left");
+        
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>

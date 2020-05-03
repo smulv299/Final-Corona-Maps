@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      
+google.charts.load('current', {'packages':['corechart']});
+
+
+google.charts.setOnLoadCallback(drawCovidDataChart);
+
+      
+      // Callback that draws the pie chart for Anthony's pizza.
+function drawCovidDataChart() {
+
+        var covidData = new google.visualization.DataTable();
+        covidData.addColumn('string', 'County');
+        covidData.addColumn('number', 'Positive'); 
+        covidData.addColumn('number', 'Negative');
+        covidData.addColumn('number', 'Deaths');
+          
+        covidData.addRows([
+         ['Philadelphia County',8138, 18755, 136],
+         ['Montgomery County',2684, 11330, 97],
+         ['Delaware County', 2226, 5825, 73],    
+         ['Lehigh County', 2092, 5441, 29],
+         ['Luzerne', 1668, 1960, 31]    
+        ]);
+
+        // Set options for Anthony's pie chart.
+        var options = {title:'COVID-19 Data for Top 5 Positive PA Counties',
+                       width:1000,
+                       height:800,
+                       zoom: 3,
+                       };
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('Covid_chart_div'));
+        chart.draw(covidData, options);
+      }
+    </script>
+  </head>
+  <body>
+    <!--Table and divs that hold the pie charts-->
+    <table class="columns">
+      <tr>
+        
+        <td><div id="Covid_chart_div" style="border: 1px solid #ccc"></div></td>
+      </tr>
+    </table>
+  </body>
+</html>

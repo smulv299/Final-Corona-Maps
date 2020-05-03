@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>COVID-19 Data</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #001323;
+        }
+        h2 {
+            display: inline-block;
+            color: #0d0000;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #001323;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>COVID-19 Pennsylvania Counties</h1>
+        <h2>Web Mapping GIS</h2>
+    </header>
+
+    <div id='map'></div>
+
+    <footer>
+        <p>Map authored by Sean Mulville</p>
+        <p>This is a map showing the data for the counties of Pennsylvania. The data shows COVID-19 positive cases, negative cases, and deaths. Click on each county to find out the data. These data are according to the date of April 17, 2020</p>
+    </footer>
+
+    <script src="PA COUNTY COVID-19 DATA PND.js"></script>
+    <script>
+
+      var map = L.map('map', {
+          center: [41,-78],
+          zoom: 7,
+      });
+      
+      var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+          subdomains: 'abcd',
+          maxZoom: 19
+      });  
+      
+      tiles.addTo(map);
+        
+             
+        
+        
+//----------------------COUNTIES DATA-------------------------------------//   
+        
+var countiesData = L.geoJson(counties, {
+    pointToLayer: function(feature,latlng) {
+        
+              return L.CircleMarker(latlng, {
+                 color: 'blue',
+                 weight: 0,
+                 fillColor: 'blue',
+                 fillOpacity: .5
+              });   
+          },
+    
+          
+    onEachFeature : function(feature,layer) {
+    layer.on('mouseover', function() {
+    layer.setStyle({
+        fillColor: 'blue'
+    });
+});
+layer.on('mouseout', function() {
+    layer.setStyle({
+        fillColor: 'blue'
+    });
+});
+
+
+           
+          
+    var name = feature.properties.COUNTY_NAM
+    var deaths = feature.properties.COVID_DEAT.toLocaleString()
+    var pos = feature.properties.COVID_POV.toLocaleString()
+    var neg = feature.properties.COVID_NEG
+      
+                                                
+          
+    var popup = ("<b style='color:#000000' County: >"+name+"</b><br>"+"<b style='color:#ff0000'> Deaths: "+"</b>"+deaths+ "<br>"+ "<b>Positive Cases: </b>" +pos+ "<br>" + "<b> Negative Cases: </b>" +neg) 
+    layer.bindPopup(popup)
+        
+          }
+          
+          
+      }).addTo(map);
+
+        function getRadius(area){
+        var radius = Math.sqrt(area/Math.PI);
+        return radius *.6   
+    }
+      
+        
+       
+   //------------------------MENU TOGGLE FOR LAYERS---------------------------------//     
+        
+    var sourcesLayers = {        
+        "<b>County Data</b>": countiesData,
+    } 
+    
+  L.control.layers(null, sourcesLayers, { collapsed:false }).addTo(map);  
+    
+    
+    </script>
+    
+</body>
+
+</html>
